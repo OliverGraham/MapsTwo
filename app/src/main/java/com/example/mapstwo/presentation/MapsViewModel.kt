@@ -9,6 +9,7 @@ import com.example.mapstwo.domain.model.ParkingSpot
 import com.example.mapstwo.domain.repository.ParkingSpotRepository
 import com.google.android.gms.maps.model.MapStyleOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +19,18 @@ class MapsViewModel @Inject constructor(
 ): ViewModel() {
 
     var state by mutableStateOf(MapState())
+
+    init {
+
+        // Listen for changes in the database
+        viewModelScope.launch {
+            repository.getParkingSpots().collectLatest { spots ->
+                state = state.copy(
+                    parkingSpots = spots
+                )
+            }
+        }
+    }
 
     fun onEvent(event: MapEvent) {
         when(event) {
