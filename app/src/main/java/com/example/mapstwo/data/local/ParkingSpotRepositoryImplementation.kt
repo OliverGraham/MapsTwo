@@ -9,11 +9,11 @@ class ParkingSpotRepositoryImplementation(
     private val dao: ParkingSpotDao
 ): ParkingSpotRepository {
     override suspend fun insertParkingSpot(spot: ParkingSpot) {
-        TODO("Not yet implemented")
+        dao.insertParkingSpot(spot.toParkingSpotEntity())
     }
 
     override suspend fun deleteParkingSpot(spot: ParkingSpot) {
-        TODO("Not yet implemented")
+        dao.deleteParkingSpot(spot.toParkingSpotEntity())
     }
 
     override fun getParkingSpots(): Flow<List<ParkingSpot>> {
